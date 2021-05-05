@@ -4,19 +4,17 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu2004
+promotions:
+  - name: compile
+    pipeline_file: compile.yml
+    auto_promote:
+      when: "result = 'passed' and branch != 'master'"
 blocks:
   - name: Compile
     skip:
       when: "branch = 'master'"
     task:
-      prologue:
-        commands:
-          - sem-version go 1.15
-          - "export GOPATH=~/go"
-          - "export PATH=/home/semaphore/go/bin:$PATH"
-          - checkout
-
       jobs:
-        - name: compilation
+        - name: 'Something'
           commands:
-            - make run
+            - echo 0
