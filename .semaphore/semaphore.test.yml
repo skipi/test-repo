@@ -1,0 +1,82 @@
+
+version: v1.0
+name: Test Results
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+promotions:
+  - name: compile
+    pipeline_file: compile.yml
+    auto_promote:
+      when: "result = 'passed' and branch != 'master'"
+blocks:
+  - name: Compile
+    skip:
+      when: "branch = 'master'"
+    task:
+      jobs:
+        - name: 'Something'
+          commands:
+            - echo 0
+
+
+  - name: a5
+    skip:
+      when: "branch != 'master'"
+    task:
+      prologue:
+        commands:
+          - checkout
+      jobs:
+  
+
+        - name: a5
+          commands:
+            - test-results publish a5/a5
+  
+
+  - name: m1
+    skip:
+      when: "branch != 'master'"
+    task:
+      prologue:
+        commands:
+          - checkout
+      jobs:
+  
+
+        - name: a1
+          commands:
+            - test-results publish m1/a1
+  
+
+        - name: a2
+          commands:
+            - test-results publish m1/a2
+  
+
+  - name: m2
+    skip:
+      when: "branch != 'master'"
+    task:
+      prologue:
+        commands:
+          - checkout
+      jobs:
+  
+
+        - name: a3
+          commands:
+            - test-results publish m2/a3
+  
+
+        - name: a4
+          commands:
+            - test-results publish m2/a4
+  
+
+        - name: nnnn
+          commands:
+            - test-results publish m2/nnnn
+  
