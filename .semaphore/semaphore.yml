@@ -7,7 +7,7 @@ agent:
 blocks:
   - name: Compile
     skip:
-      when: "branch == 'master'"
+      when: "branch = 'master'"
     task:
       prologue:
         commands:
