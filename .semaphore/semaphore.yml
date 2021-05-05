@@ -7,10 +7,16 @@ agent:
 blocks:
   - name: Compile
     skip:
-      when: "branch != 'master'"
+      when: "branch == 'master'"
     task:
+      prologue:
+        commands:
+          - sem-version go 1.15
+          - "export GOPATH=~/go"
+          - "export PATH=/home/semaphore/go/bin:$PATH"
+          - checkout
+
       jobs:
         - name: compilation
           commands:
             - make run
-

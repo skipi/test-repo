@@ -29,6 +29,13 @@ blocks:
     skip:
       when: "branch == 'master'"
     task:
+      prologue:
+        commands:
+          - sem-version go 1.15
+          - "export GOPATH=~/go"
+          - "export PATH=/home/semaphore/go/bin:$PATH"
+          - checkout
+
       jobs:
         - name: compilation
           commands:
@@ -41,6 +48,9 @@ func (me Task) toYAML() string {
     skip:
       when: "branch != 'master'"
     task:
+      prologue:
+        commands:
+          - checkout
       jobs:
   `
 	out = fmt.Sprintf(out, me.Name)
@@ -55,7 +65,6 @@ func (me Job) toYAML(dir string) string {
 	out := `
         - name: %s
           commands:
-            - checkout
             - test-results publish %s/%s
   `
 	out = fmt.Sprintf(out, me.Name, dir, me.Name)
